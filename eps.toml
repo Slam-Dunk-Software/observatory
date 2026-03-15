@@ -1,0 +1,14 @@
+[package]
+name        = "observatory"
+version     = "0.1.0"
+description = "Lightweight health monitoring dashboard for EPC services"
+authors     = ["nickagliano"]
+license     = "MIT"
+platform    = ["aarch64-apple-darwin", "x86_64-unknown-linux-gnu"]
+repository  = "https://github.com/Slam-Dunk-Software/observatory"
+
+[service]
+enabled      = true
+start        = "observatory serve"
+port         = 9090
+health_check = "GET /health"
