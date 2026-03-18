@@ -9,6 +9,7 @@ repository  = "https://github.com/Slam-Dunk-Software/observatory"
 
 [service]
 enabled      = true
+startup      = true
 start        = "observatory serve"
 port         = 9090
 health_check = "GET /health"
