@@ -138,6 +138,42 @@ fn progress_bar_html(pct: u8, warn_threshold: u8, alert_threshold: u8) -> String
     format!(r#"<span style="color:{color}">{bar}</span> <span style="color:#9090b0">{pct}%</span>"#)
 }
 
+/// Reads all `*.html` files from `OBSERVATORY_PANELS_DIR` (default
+/// `~/.epm/services/panels/`) sorted by filename and returns them
+/// concatenated. Files are injected between the node section and service
+/// cards, so personal panels appear at the top of the main content area.
+fn load_panels() -> String {
+    let dir = std::env::var("OBSERVATORY_PANELS_DIR")
+        .ok()
+        .map(std::path::PathBuf::from)
+        .unwrap_or_else(|| {
+            dirs::home_dir()
+                .unwrap_or_else(|| std::path::PathBuf::from("/tmp"))
+                .join(".epm/services/panels")
+        });
+
+    if !dir.exists() {
+        return String::new();
+    }
+
+    let mut files: Vec<_> = std::fs::read_dir(&dir)
+        .ok()
+        .into_iter()
+        .flatten()
+        .filter_map(|e| e.ok())
+        .map(|e| e.path())
+        .filter(|p| p.extension().and_then(|s| s.to_str()) == Some("html"))
+        .collect();
+
+    files.sort();
+
+    files
+        .iter()
+        .filter_map(|p| std::fs::read_to_string(p).ok())
+        .collect::<Vec<_>>()
+        .join("\n")
+}
+
 fn render(db: &Arc<Mutex<Connection>>) -> String {
     let conn = db.lock().unwrap();
 
@@ -148,6 +184,7 @@ fn render(db: &Arc<Mutex<Connection>>) -> String {
     let states = db::all_states(&conn).unwrap_or_default();
     let ports = load_service_ports();
     let host = std::env::var("HOST").unwrap_or_else(|_| "localhost".to_string());
+    let panels = load_panels();
 
     // ── Node cards ────────────────────────────────────────────────────────────
     let mut node_section = String::new();
@@ -503,6 +540,7 @@ fn render(db: &Arc<Mutex<Connection>>) -> String {
   Observatory
 </h1>
 {node_section}
+{panels}
 {cards}
 <div class="bottom-bar">
   <span class="label">Observatory &nbsp;·&nbsp; refreshes every 30s</span>
