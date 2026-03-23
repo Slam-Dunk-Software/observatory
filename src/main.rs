@@ -59,7 +59,7 @@ async fn main() -> Result<()> {
     // Open SQLite
     let db_path = dirs::home_dir()
         .unwrap_or_else(|| PathBuf::from("/tmp"))
-        .join(".epc/observatory.db");
+        .join(".epm/services/observatory.db");
     if let Some(parent) = db_path.parent() {
         std::fs::create_dir_all(parent)?;
     }
@@ -109,7 +109,7 @@ async fn logs_handler(
     }
     let log_path = dirs::home_dir()
         .unwrap_or_else(|| PathBuf::from("/tmp"))
-        .join(".epc/logs")
+        .join(".epm/services/logs")
         .join(format!("{service}.log"));
 
     let content = std::fs::read_to_string(&log_path)

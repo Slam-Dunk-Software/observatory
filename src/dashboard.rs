@@ -23,7 +23,7 @@ struct ServiceEntry {
 fn load_service_ports() -> HashMap<String, u16> {
     let path = dirs::home_dir()
         .unwrap_or_else(|| std::path::PathBuf::from("/tmp"))
-        .join(".epc/services.toml");
+        .join(".epm/services/services.toml");
     let raw = std::fs::read_to_string(&path).unwrap_or_default();
     let sf: ServicesFile = toml::from_str(&raw).unwrap_or_default();
     sf.services.into_iter().map(|(k, v)| (k, v.port)).collect()
@@ -296,7 +296,7 @@ fn render(db: &Arc<Mutex<Connection>>) -> String {
     }
 
     if cards.is_empty() {
-        cards = r#"<div class="card empty">No services found in ~/.epc/services.toml</div>"#.to_string();
+        cards = r#"<div class="card empty">No services found in ~/.epm/services/services.toml</div>"#.to_string();
     }
 
     format!(

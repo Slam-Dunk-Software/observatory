@@ -31,7 +31,7 @@ struct NodesFile {
 pub fn nodes_toml_path() -> PathBuf {
     dirs::home_dir()
         .unwrap_or_else(|| PathBuf::from("/tmp"))
-        .join(".epc/nodes.toml")
+        .join(".epm/services/nodes.toml")
 }
 
 pub fn load_nodes() -> Vec<NodeConfig> {

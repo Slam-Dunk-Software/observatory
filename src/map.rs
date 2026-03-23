@@ -10,7 +10,7 @@ fn map_path() -> std::path::PathBuf {
         .unwrap_or_else(|_| {
             dirs::home_dir()
                 .unwrap_or_else(|| std::path::PathBuf::from("/tmp"))
-                .join(".epc/code_map.md")
+                .join(".epm/services/code_map.md")
         })
 }
 

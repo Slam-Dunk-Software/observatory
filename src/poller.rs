@@ -14,7 +14,7 @@ use tokio::time;
 
 use crate::{alert, db, nodes};
 
-// ── EPC state file structs ────────────────────────────────────────────────────
+// ── epm services state file structs ────────────────────────────────────────────────────
 
 #[derive(Debug, Deserialize)]
 struct ServiceEntry {
@@ -64,7 +64,7 @@ fn read_eps_info(dir: &str) -> (Option<String>, Option<bool>, Option<String>) {
     (health_check, tls, repo_url)
 }
 
-// ── Port-listening check (mirrors EPC's approach) ─────────────────────────────
+// ── Port-listening check (mirrors epm services approach) ─────────────────────────────
 
 fn is_port_listening(port: u16) -> bool {
     let out = Command::new("lsof")
@@ -88,12 +88,12 @@ fn tailscale_ip() -> String {
     out.trim().to_string()
 }
 
-// ── EPC state file path ───────────────────────────────────────────────────────
+// ── epm services state file path ───────────────────────────────────────────────────────
 
 fn services_toml_path() -> PathBuf {
     dirs::home_dir()
         .unwrap_or_else(|| PathBuf::from("/tmp"))
-        .join(".epc/services.toml")
+        .join(".epm/services/services.toml")
 }
 
 // ── Main poll loop ────────────────────────────────────────────────────────────

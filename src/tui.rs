@@ -27,7 +27,7 @@ pub fn run() -> Result<()> {
 
     let db_path = dirs::home_dir()
         .unwrap_or_else(|| PathBuf::from("/tmp"))
-        .join(".epc/observatory.db");
+        .join(".epm/services/observatory.db");
     let conn = Connection::open(&db_path)?;
 
     let result = event_loop(&mut terminal, &conn);
