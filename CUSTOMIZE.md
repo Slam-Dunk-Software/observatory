@@ -1,7 +1,7 @@
 # observatory — Customization Guide
 
 Observatory is a lightweight health monitoring dashboard for EPC services. It polls the
-health endpoints of every service in `~/.epc/services.toml`, stores history in SQLite,
+health endpoints of every service in `~/.epm/services/services.toml`, stores history in SQLite,
 and serves a mobile-friendly dark-mode dashboard with status badges and dot-grid sparklines.
 It also fires txtme alerts when a service transitions between running/degraded/stopped.
 
@@ -31,7 +31,7 @@ Alert messages look like: `[Observatory] morning_brief is DOWN` / `[Observatory]
 
 **What it does:** Path to a Markdown file served at `/map`. Useful for displaying
 a generated code map (e.g. from `tree_walker`).
-**Default:** `~/.epc/code_map.md`
+**Default:** `~/.epm/services/code_map.md`
 **How to customize:** Set `MAP_PATH=/path/to/your/map.md` in `.env`.
 The `/map/refresh` endpoint runs `tree_walker --output <MAP_PATH>` to regenerate it.
 
@@ -66,6 +66,6 @@ to your preferred refresh interval in seconds.
 
 ### Monitoring services not managed by EPC
 
-Observatory reads `~/.epc/services.toml` for service discovery. To monitor additional
+Observatory reads `~/.epm/services/services.toml` for service discovery. To monitor additional
 endpoints, edit `src/poller.rs` → `poll_once()` and add entries to a hardcoded list
 alongside the services discovered from the state file.
